@@ -32,11 +32,11 @@ def sysinfos(channel):
         today_time = now.strftime("%H:%M:%S")
         today_date = now.strftime("%d %b %y")
         try:
-	    IP1, IP2, IP3 = get_ip()
-	except:
-	    IP1= get_ip()
-	    IP2= "Nan"
-	    IP3= "Nan"
+	        IP1, IP2, IP3 = get_ip()
+        except:
+	        IP1= get_ip()[0]
+	        IP2= "Nan"
+	        IP3= "Nan"
         cmd = "top -bn1 | grep load | awk '{printf \"CPU Load: %.2f\", $(NF-2)}'"
         CPU = subprocess.check_output(cmd, shell = True )
         cmd = "free -m | awk 'NR==2{printf \"Mem: %s/%sMB %.2f%%\", $3,$2,$3*100/$2 }'"

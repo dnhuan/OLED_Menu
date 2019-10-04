@@ -2,7 +2,11 @@
 # -*- coding:utf-8 -*-\
 from __future__ import print_function
 
+import os
+import signal
 import time
+import configparser
+
 import config
 import utils
 import pimodules as pim
@@ -71,6 +75,7 @@ def KEY2(channel):
     pim.key_handler(channel)
 
 def KEY3(channel):
+    #displayGUI.contrast()
     utils.display_on_off = not utils.display_on_off
 
 ## Add interupts
@@ -83,7 +88,16 @@ GPIO.add_event_detect(KEY1_PIN, GPIO.FALLING, callback=KEY1, bouncetime=300)
 GPIO.add_event_detect(KEY2_PIN, GPIO.FALLING, callback=KEY2, bouncetime=300)
 GPIO.add_event_detect(KEY3_PIN, GPIO.FALLING, callback=KEY3, bouncetime=300)
 
+# kill SIGs
+def receiveSignal(signalNumber, frame):
+    print('Received: ', signalNumber)
+    config.module_exit()
+    exit()
+
+signal.signal(signal.SIGTERM, receiveSignal)
+
 try:
+    print('My PID is:', os.getpid())
     utils.init()
     pim.mainmenu(0)
     displayGUI.init()

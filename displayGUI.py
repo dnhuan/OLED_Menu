@@ -18,7 +18,10 @@ disp.Init()
 disp.clear()
 
 ## Init fonts
-font = ImageFont.load_default()
+try:
+    font = ImageFont.load_path("courR08.pil")
+except:
+    font = ImageFont.load_default()
 
 image = Image.new('1', (disp.width, disp.height), 1)
 draw = ImageDraw.Draw(image)
@@ -77,3 +80,12 @@ def init():
                 u.already = True
             time.sleep(0.5)
 
+def contrast():
+    # cycle
+    u.brightness += 1
+    if u.brightness > 16:
+        u.brightness = 0
+    print(u.brightness*16)
+    print(int(hex(u.brightness*16),16))
+    disp.command(0x81);
+    disp.command(0xA0);

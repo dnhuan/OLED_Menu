@@ -72,6 +72,66 @@ def sysinfos(channel):
     elif channel == c.KEY2_PIN:
         mainmenu(0)
 
+def reset_config(channel):
+    _id = 7
+    if channel == 0:
+        if u.page != _id:
+            #init
+            u.page = _id
+            u.cursor = 0
+        u.gui_buffer = [
+            "",
+            "Do you want to reset",
+            "all configs",
+            "",
+            " > No",
+            "   Yes",
+            ""
+        ]
+    elif channel == c.KEY_DOWN_PIN:
+        u.cursor = 1
+        u.gui_buffer = [
+            "",
+            "Do you want to reset",
+            "all configs",
+            "",
+            "   No",
+            " > Yes",
+            ""
+        ]
+    elif channel == c.KEY_UP_PIN:
+        u.cursor = 0
+        u.gui_buffer = [
+            "",
+            "Do you want to reset",
+            "all configs",
+            "",
+            " > No",
+            "   Yes",
+            ""
+        ]
+    elif channel == c.KEY1_PIN:
+        if u.cursor == 0:
+            mainmenu(0)
+        elif u.cursor == 1:
+            # reset
+
+            # GUI reset
+            u.gui_buffer = [
+            "",
+            "RESETTING ALL CONFIGS",
+            "",
+            "",
+            "",
+            "",
+            ""
+            ]
+            time.sleep(0.5)
+            mainmenu(0)
+            return
+
+    elif channel == c.KEY2_PIN:
+        mainmenu(0)
 
 def select_module(_id):
     if   _id == 0:
@@ -95,6 +155,9 @@ def select_module(_id):
 
     elif _id == 6:
         shell("sudo reboot")
+
+    elif _id == 7:
+        reset_config(0)
 
 def mainmenu(channel):
     _id = -1
@@ -139,6 +202,7 @@ def mainmenu(channel):
 def key_handler(channel):
     if u.page == -1:
         mainmenu(channel)
-    if u.page == 0:
-        u.pending = True
+    elif u.page == 0:
         sysinfos(channel)
+    elif u.page == 7:
+        reset_config(channel)
